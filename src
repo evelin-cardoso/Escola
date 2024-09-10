@@ -1,51 +1,50 @@
-drop database Escola;
-create database Escola;
-use Escola;
-set sql_safe_updates = 0;
+-- Remover o banco de dados existente e criar um novo
+DROP DATABASE IF EXISTS Escola;
+CREATE DATABASE Escola;
+USE Escola;
 
-create table Alunos(
-id_aluno INT auto_increment primary key,
-nome VARCHAR(255) NOT NULL,
-data_nascimento date,
-endereço VARCHAR(255) NOT NULL
+-- Desativar atualizações seguras (não recomendado para produção)
+SET sql_safe_updates = 0;
+
+-- Criar tabela Alunos
+CREATE TABLE Alunos (
+  id_aluno INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  data_nascimento DATE,
+  endereço VARCHAR(255) NOT NULL
 );
 
-create table Cursos(
-id_curso INT auto_increment primary key,
-nome_curso VARCHAR(255) NOT NULL,
-descricao VARCHAR(255) NOT NULL,
-id_aluno INT,
-FOREIGN KEY (id_aluno) REFERENCES Alunos (id_aluno)
+-- Criar tabela Cursos
+CREATE TABLE Cursos (
+  id_curso INT AUTO_INCREMENT PRIMARY KEY,
+  nome_curso VARCHAR(255) NOT NULL,
+  descricao VARCHAR(255) NOT NULL
 );
 
+-- Criar tabela Notas
 CREATE TABLE Notas (
   id_nota INT AUTO_INCREMENT PRIMARY KEY,
-  id_aluno VARCHAR(255) NOT NULL,
+  id_aluno INT NOT NULL,
   id_curso INT NOT NULL,
-  nota VARCHAR(255) NOT NULL,
+  nota DECIMAL(3,1) NOT NULL, -- Definido como decimal para armazenar números com ponto flutuante
+  FOREIGN KEY (id_aluno) REFERENCES Alunos (id_aluno),
   FOREIGN KEY (id_curso) REFERENCES Cursos (id_curso)
 );
 
-INSERT INTO Alunos (id_aluno, nome, data_nascimento, endereço) VALUES
-('6543536', 'Gabriela Antunez', '2004-02-07', 'Avenida Gárcia'),
-('6543221', 'Rafael Smith', '2004-09-22', 'Rua Paraíso'),
-('6421389', 'Lauriane Peixoto', '2004-12-15', 'Sonho de Palmas');
+-- Inserir dados na tabela Alunos
+INSERT INTO Alunos (nome, data_nascimento, endereço) VALUES
+('Gabriela Antunez', '2004-02-07', 'Avenida Gárcia'),
+('Rafael Smith', '2004-09-22', 'Rua Paraíso'),
+('Lauriane Peixoto', '2004-12-15', 'Sonho de Palmas');
 
-insert INTO Cursos (id_curso, nome_curso, descricao) VALUES
-(123476, 'Matemática', ' Inclui áreas como aritmética, álgebra, geometria, cálculo, estatística, e matemática aplicada '),
-(12354, 'Ciências', ' É um campo amplo que engloba o estudo de fenômenos naturais e processos do universo.'),
-(34765, 'Geografia', ' É a ciência que estuda a Terra, suas paisagens, ambientes, populações, e a interação entre eles');
+-- Inserir dados na tabela Cursos
+INSERT INTO Cursos (nome_curso, descricao) VALUES
+('Matemática', 'Inclui áreas como aritmética, álgebra, geometria, cálculo, estatística, e matemática aplicada.'),
+('Ciências', 'É um campo amplo que engloba o estudo de fenômenos naturais e processos do universo.'),
+('Geografia', 'É a ciência que estuda a Terra, suas paisagens, ambientes, populações, e a interação entre eles.');
 
+-- Inserir dados na tabela Notas
 INSERT INTO Notas(id_aluno, id_curso, nota) VALUES
-('6543536', '123476', '9.5'),
-('6543221', '12354', '10'),
-('6421389', '34765', '7.5')
-
-
-
-
-
-
-
-
- 
+(1, 1, 9.5),
+(2, 2, 10),
+(3, 3, 7.5);
